@@ -78,7 +78,6 @@ A lightweight, premium full-stack application engineered to streamline daily ope
 ## 🔹 Tradeoffs
 
 **What was skipped:**
-- **User Authentication / RBAC (Role-Based Access):** Skipped adding JWT/OAuth. Anyone who accesses the console has full administrative permissions right now since the goal was specifically a lightweight MVP management console.
 - **Redux / Complex State Management:** Intentionally omitted React Context / Redux to keep things light. Passing properties or straightforward `useState` effectively managed this application's scope efficiently.
 - **Production Hosted Deployment Setup:** Intentionally kept `mongodb://127.0.0.1` locally rather than routing towards Mongo Atlas and generating Heroku/Vercel pipelines. 
 
