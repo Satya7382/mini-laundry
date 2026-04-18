@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
+
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import OrdersList from './pages/OrdersList';
 import CreateOrder from './pages/CreateOrder';
 import Login from './pages/Login';
 import { Toaster } from 'react-hot-toast';
-import axios from 'axios';
+
+// ✅ Set base URL (optional but clean)
+axios.defaults.baseURL = 'http://localhost:5001/api';
+
+// ✅ SET TOKEN IMMEDIATELY ON LOAD (IMPORTANT)
+const savedToken = localStorage.getItem('adminToken');
+if (savedToken) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
+}
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('adminToken'));
+  const [token, setToken] = useState(savedToken);
 
   useEffect(() => {
-    // Inject Token automatically on outgoing requests
-    const reqInterceptor = axios.interceptors.request.use(config => {
-      const currentToken = localStorage.getItem('adminToken');
-      if (currentToken) {
-        config.headers.Authorization = `Bearer ${currentToken}`;
-      }
-      return config;
-    });
-
-    // Detect global token invalidation
+    // ✅ Interceptor for handling 401 globally
     const resInterceptor = axios.interceptors.response.use(
-      response => response,
-      error => {
+      (response) => response,
+      (error) => {
         if (error.response?.status === 401) {
           localStorage.removeItem('adminToken');
+          delete axios.defaults.headers.common['Authorization'];
           setToken(null);
         }
         return Promise.reject(error);
@@ -34,21 +36,25 @@ function App() {
     );
 
     return () => {
-      axios.interceptors.request.eject(reqInterceptor);
       axios.interceptors.response.eject(resInterceptor);
     };
   }, []);
 
+  // ✅ LOGIN HANDLER
   const handleLogin = (newToken) => {
     localStorage.setItem('adminToken', newToken);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
     setToken(newToken);
   };
 
+  // ✅ LOGOUT HANDLER
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
+    delete axios.defaults.headers.common['Authorization'];
     setToken(null);
   };
 
+  // 🔐 If not logged in → show login page
   if (!token) {
     return (
       <>
@@ -58,10 +64,12 @@ function App() {
     );
   }
 
+  // ✅ Main App
   return (
     <BrowserRouter>
       <div className="app-container">
         <Sidebar onLogout={handleLogout} />
+        
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -69,13 +77,17 @@ function App() {
             <Route path="/create-order" element={<CreateOrder />} />
           </Routes>
         </main>
-        <Toaster position="top-right" toastOptions={{
-          style: {
-            background: 'var(--bg-dark)',
-            color: 'var(--text-main)',
-            border: '1px solid var(--glass-border)'
-          }
-        }} />
+
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: 'var(--bg-dark)',
+              color: 'var(--text-main)',
+              border: '1px solid var(--glass-border)'
+            }
+          }}
+        />
       </div>
     </BrowserRouter>
   );
