@@ -1,0 +1,28 @@
+**
+what did you understood by given problem statement. 
+
+**
+Okay, for the front end, use React-vite.
+For backend, use Node.js and Express.js, and for database use MongoDB.  
+
+**
+change the port for frontend to 3000
+
+**
+Now connect this website to Mongodb
+
+**
+🧪 CRITICAL TEST (do this now)
+
+Open browser and go to:
+
+http://localhost:5000/api/orders
+Result:
+❌ Not loading → backend not reachable → root issue
+✅ JSON appears → backend is fine → CORS config issue
+
+i did this 
+
+Access to localhost was denied
+You don't have authorization to view this page.
+HTTP ERROR 403
