@@ -53,7 +53,7 @@ const CreateOrder = () => {
     
     try {
       setLoading(true);
-      await axios.post('http://localhost:5001/api/orders', {
+      await axios.post('/orders', {
         customerName,
         phoneNumber,
         items,

@@ -13,7 +13,7 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5001/api/orders/dashboard');
+      const { data } = await axios.get('/orders/dashboard');
       setStats(data);
     } catch (error) {
       toast.error('Failed to load dashboard data');

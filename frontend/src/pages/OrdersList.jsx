@@ -15,7 +15,7 @@ const OrdersList = () => {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5001/api/orders', {
+      const { data } = await axios.get('/orders', {
         params: { search, status: statusFilter }
       });
       setOrders(data.data ? data.data : Array.isArray(data) ? data : []);
@@ -28,7 +28,7 @@ const OrdersList = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      await axios.put(`http://localhost:5001/api/orders/${id}/status`, { status: newStatus });
+      await axios.put(`/orders/${id}/status`, { status: newStatus });
       toast.success('Status updated successfully');
       fetchOrders();
     } catch (error) {

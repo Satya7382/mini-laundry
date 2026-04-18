@@ -17,8 +17,9 @@ app.use(cors());
 app.use(express.json());
 
 // Database connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mini-laundry';
+const MONGODB_URI = process.env.MONGODB_URI;
 
+console.log(`Connecting to MongoDB at: ${MONGODB_URI}`);
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));

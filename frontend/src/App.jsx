@@ -9,8 +9,8 @@ import CreateOrder from './pages/CreateOrder';
 import Login from './pages/Login';
 import { Toaster } from 'react-hot-toast';
 
-// ✅ Set base URL (optional but clean)
-axios.defaults.baseURL = 'http://localhost:5001/api';
+// ✅ Set base URL
+axios.defaults.baseURL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:5001/api';
 
 // ✅ SET TOKEN IMMEDIATELY ON LOAD (IMPORTANT)
 const savedToken = localStorage.getItem('adminToken');
